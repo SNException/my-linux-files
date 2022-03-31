@@ -1,0 +1,170 @@
+Add directory to path (put it inside .bashrc):
+    $ export PATH="$PATH:/path/to/dir"
+
+Replace a string with something else:
+    $ echo $SOMETHING | sed 's/What/With/g'
+
+Store command result in variable:
+    $ OUTPUT=$(sensors | awk '/^Core/ {print $3}')
+
+Create environment variable (put it in '~/.bashrc' or put in '/etc/environment' to make it permanent)
+    $ export SOME_NAME="some value"
+
+Print environment variable (e.g random number)
+    $ echo $RANDOM
+
+Download something from the internet (e.g an image)
+    $ wget www.for.com/bar.jpg
+
+Execute multiple commands as su:
+    $ sudo -s eval 'ls -aril && echo "foobar" && cat foo.txt | head -10'
+
+Show services of systemd:
+    $ systemctl list-units
+
+List autostart programs (root):
+    $ ls /etc/xdg/autostart
+
+List autostart programs (user-specific):
+    $ ls ~/.config/autostart
+
+Clear an alias:
+    $ unalias <name>
+
+Set an alias (e.g rot13):
+    $ alias rot13="tr 'A-Za-z' 'N-ZA-Mn-za-m'"
+
+Grep something which is not equal to the given string (e.g list only block devices):
+    $ find /dev/ | xargs file | grep -v character | grep -v directory | grep -v symbolic
+
+List connected usb devices:
+    $ lsusb
+
+List open files information:
+    $ lsof
+
+List cpu information:
+    $ lscpu
+
+List hardware:
+    $ lshw
+
+List block devices (drives):
+    $ lsblk
+
+Remind yourself about the insane unix file structure:
+    $ man hier
+
+Display kernel messages:
+    $ dmesg
+
+Get list of available kernel versions (generic):
+    $ apt search linux-image | grep -i generic
+
+Show current kernel version:
+    $ uname -r
+
+Play angband inside terminal:
+    $ angband -mgcu
+
+Watch a command result:
+    $ watch sensors
+
+Check boot time:
+    $ systemd-analyze blame
+
+Find a file and open it in vim:
+    $ find . | grep -i <filename> | xargs vim
+
+Run rkhunter:
+    $ sudo rkhunter --sk --check
+
+Get sha256 from every file in directory:
+    $ find <dirname> | xargs sha256sum
+
+Create sequence of files
+    $ seq 10 | xargs touch
+
+Count all lines recursively:
+    $ find *.* | xargs wc -l
+
+Shutdown now:
+    $ shutdown now
+
+Kill (Terminate) process by name:
+    $ killall <processname>
+
+Good was to list a directory:
+    $ ls -aril
+
+Print the current uptime of the machine:
+    $ uptime
+
+Search a string inside all files recursively:
+    $ grep -irn "static" .
+
+Equivalent to Windows TaskList.exe:
+    $ ps -ef
+
+Count current runnig processes:
+    $ ps -ef | wc -l
+
+Get cpu temperature:
+    $ sensors | grep -i core
+
+Check OS version:
+    $ lsb_release -a
+    $ cat /etc/os-release
+
+Change screen resolution:
+    $ xrandr -s <index>
+    $ xrandr --newmode "1920x1080"  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync
+    $ xrandr --addmode eDP-1 1920x1080
+    $ xrandr --output eDP-1 --mode 1920x1080
+
+Mount a drive:
+    $ mount <device> <target_dir>
+        sudo mount /dev/sda3 /media/niklas/hdd
+        
+Unmount a drive:
+    $ umount <device>
+        sudo mount /dev/sda3
+
+Update remote repository:
+    $ sudo apt update
+
+Update all installed packages:
+    $ sudo apt upgrade
+
+Deletes unusued (dead) packages
+    $ sudo apt autoremove
+
+Update all specific package:
+    $ sudo apt --only-upgrade install <packagename>
+
+Search if a package is available:
+    $ apt search <packagename>
+
+List what packages are already installed on this machine:
+    $ apt list --installed
+
+Shows information about an installed package
+    $ apt show <packagename>
+
+Install a package:
+    $ apt install <packagename>
+
+Uninstall a package (leaves configuration):
+    $ apt remove <packagename>
+
+Uninstall a package:
+    $ apt purge <packagename>
+
+Check package version before installing:
+    $ apt-cache policy <packagename>
+
+Search file name recursively:
+    $ find / | grep -i stringToSearchFor
+
+How much space has root left:
+    $ df -h /

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+echo
+echo "[ RAM ]"
+echo
+ps axch -o cmd:20,%mem --sort=-%mem | head
+echo
+echo "[ CPU ]"
+echo
+ps axch -o cmd:20,%cpu --sort=-%cpu | head

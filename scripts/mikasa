@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+sudo -s eval 'echo && echo [ Firewall ] && ufw status && echo && sleep 2 && echo [ chkrootkit ] && chkrootkit && echo && sleep 2 && rkhunter --sk --check'

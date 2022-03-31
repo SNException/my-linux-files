@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+if ! command -v sensors > /dev/null
+then
+    echo "No 'lm_sensors' installed on this machine."
+    echo "Script will terminate!"
+    exit 1
+fi
+
 OUTPUT=$(sensors | awk '/^Core/ {print $3}')
 MOD_OUTPUT=$(echo $OUTPUT | sed 's/C//g' | sed 's/°//g' | sed 's/+//g' | sed 's/\.0//g')
 C1=$(echo $MOD_OUTPUT | awk '{print $1}')

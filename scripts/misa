@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+if ! command -v ffplay > /dev/null
+then
+    echo "No 'ffplay' installed on this machine."
+    echo "Script will terminate!"
+    exit 1
+fi
+
+trap abort SIGINT
+abort() {
+    exit 0
+}
+
+if [ -d "$1" ]
+then
+    for f in *.mp3
+    do
+        command ffplay -nodisp -autoexit "$f"
+    done
+else
+    command ffplay -nodisp -autoexit "$1"
+fi

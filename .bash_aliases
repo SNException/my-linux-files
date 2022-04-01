@@ -8,7 +8,6 @@ alias os_version='lsb_release -sr'
 alias kernel_version='uname -r'
 alias angband='~/angband/src/angband -msdl2'
 alias less='less -X'
-alias ffplay='ffplay -nodisp -autoexit'
 function open () {
     xdg-open "$@" >/dev/null 2>&1 &
 }

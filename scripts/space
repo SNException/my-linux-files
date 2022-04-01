@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+USED=$(df / -h | awk 'FNR == 2 {print}' | awk '{print $3}')
+FREE=$(df / -h | awk 'FNR == 2 {print}' | awk '{print $2}')
+
+echo $USED "/" $FREE

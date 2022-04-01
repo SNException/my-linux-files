@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+SRC=$(dirname "$0")
+find $SRC -type f -printf "%f\n"

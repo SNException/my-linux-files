@@ -1,3 +1,9 @@
+For loop range:
+    $ for i in $(seq 10); do echo $i; done
+
+Convert mp4 (video) file to mp3 (audio) file via ffmpeg:
+    $ ffmpeg -i file.mp4 file-mp3
+
 Add directory to path (put it inside .bashrc):
     $ export PATH="$PATH:/path/to/dir"
 

@@ -2,5 +2,3 @@
 
 free -h | awk '/^Mem:/ {print $3 " / " $2}' | sed "s/,/\./g"
 
-
-# todo(nschultz): show percantage used

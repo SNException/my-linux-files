@@ -1,6 +1,28 @@
 #!/usr/bin/env bash
 
-USED=$(df / -h | awk 'FNR == 2 {print}' | awk '{print $3}')
-FREE=$(df / -h | awk 'FNR == 2 {print}' | awk '{print $2}')
+used=$(df / -h | awk 'FNR == 2 {print}' | awk '{print $3}' | cut -d',' -f1)
+free=$(df / -h | awk 'FNR == 2 {print}' | awk '{print $2}' | cut -d',' -f1)
 
-echo $USED "/" $FREE
+used2=$(echo $used | sed "s/G//")
+free2=$(echo $free | sed "s/G//")
+
+current_percentage=$(awk -v var1=$used2 -v var2=$free2 'BEGIN {print (var1/var2)*100}' | cut -d'.' -f1)
+
+echo $used "/" $free "("$current_percentage"%)"
+
+reset='\033[0;0m'
+bold='\033[0;1m'
+green='\033[0;32m'
+gray='\033[0;90m'
+
+printf "${bold}[${reset}"
+for i in $(seq 100)
+do
+    if ((i <= $current_percentage))
+    then
+        printf "${green}|${reset}"
+    else
+        printf "${gray}|${reset}"
+    fi
+done
+printf "${bold}]${reset}\n"

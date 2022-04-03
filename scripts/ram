@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
-free -h | awk '/^Mem:/ {print $3 " / " $2}' | sed "s/,/\./g"
-
+result=$(free -h | awk '/^Mem:/ {print $3 " / " $2}' | sed "s/,/\./g")
+echo $result
+# echo $result "("$current_percentage")"

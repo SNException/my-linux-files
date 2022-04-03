@@ -2,9 +2,7 @@
 
 used=$(df / | awk 'FNR == 2 {print}' | awk '{print $3}')
 free=$(df / | awk 'FNR == 2 {print}' | awk '{print $2}')
-used2=$(echo $used | sed "s/G//")
-free2=$(echo $free | sed "s/G//")
-current_percentage=$(awk -v var1=$used2 -v var2=$free2 'BEGIN {print (var1/var2)*100}' | cut -d'.' -f1)
+current_percentage=$(awk -v var1=$used -v var2=$free 'BEGIN {print (var1/var2)*100}' | cut -d'.' -f1)
 current_percentage2=$(awk -v var1=$current_percentage -v var2=5 'BEGIN {print (var1/var2)}' | cut -d'.' -f1)
 
 result1=$(df / -h | awk 'FNR == 2 {print}' | awk '{print $3}')

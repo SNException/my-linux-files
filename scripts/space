@@ -1,27 +1,32 @@
 #!/usr/bin/env bash
 
-used=$(df / | awk 'FNR == 2 {print}' | awk '{print $3}')
-free=$(df / | awk 'FNR == 2 {print}' | awk '{print $2}')
-current_percentage=$(awk -v var1=$used -v var2=$free 'BEGIN {print (var1/var2)*100}' | cut -d'.' -f1)
-current_percentage2=$(awk -v var1=$current_percentage -v var2=5 'BEGIN {print (var1/var2)}' | cut -d'.' -f1)
-
-result1=$(df / -h | awk 'FNR == 2 {print}' | awk '{print $3}')
-result2=$(df / -h | awk 'FNR == 2 {print}' | awk '{print $2}')
-echo $result1 "/" $result2 "("$current_percentage"%)"
-
 reset='\033[0;0m'
 bold='\033[0;1m'
 green='\033[0;32m'
 gray='\033[0;90m'
 
-printf "${bold}[${reset}"
-for i in $(seq 20)
+mounts=$(df | awk '{print $6}' | grep -v Mounted | xargs)
+for m in $mounts
 do
-    if ((i <= $current_percentage2))
-    then
-        printf "${green}|${reset}"
-    else
-        printf "${gray}|${reset}"
-    fi
+    printf "\n${bold}[$m]${reset}\n"
+    used=$(df $m | awk 'FNR == 2 {print}' | awk '{print $3}')
+    free=$(df $m | awk 'FNR == 2 {print}' | awk '{print $2}')
+    current_percentage=$(awk -v var1=$used -v var2=$free 'BEGIN {print (var1/var2)*100}' | cut -d'.' -f1)
+    current_percentage2=$(awk -v var1=$current_percentage -v var2=5 'BEGIN {print (var1/var2)}' | cut -d'.' -f1)
+
+    result1=$(df $m -h | awk 'FNR == 2 {print}' | awk '{print $3}')
+    result2=$(df $m -h | awk 'FNR == 2 {print}' | awk '{print $2}')
+    echo $result1 "/" $result2 "("$current_percentage"%)"
+
+    printf "${bold}[${reset}"
+    for i in $(seq 20)
+    do
+       if ((i <= $current_percentage2))
+       then
+           printf "${green}|${reset}"
+       else
+           printf "${gray}|${reset}"
+       fi
+    done
+    printf "${bold}]${reset}\n"
 done
-printf "${bold}]${reset}\n"

@@ -1,3 +1,15 @@
+Print total user count:
+    $ echo -n "Total user count: " && awk -F ":" '{print $1}' /etc/passwd | wc -l
+
+Filtering via an if-statement with awk:
+    $ lsblk | awk '{if ($NF != "disk" && $NF != "part" && $NF != "MOUNTPOINT") print $NF}'
+
+Print every line wich does NOT start with a specific string via awk:
+    $ awk '!/^alias/ {print}' .bash_aliases
+
+Print last column with awk:
+    $ df | awk '{print $NF}'
+
 Print specific line with awk:
     $ awk '{if (NR == 10) print}' <filename>
 
@@ -15,6 +27,9 @@ Print all users with awk (changing column delimitter to a colon):
 
 Basic awk syntax:
     $ awk 'BEGIN {print "About to process..."} {print $1} END {print "Done processing"}' <filename> 
+
+awk hello world:
+    $ awk 'BEGIN {print "Hello, world!"}'
 
 Very useful way of using awk (make use of xargs):
     $ some_output_with_multiple_lines | xargs | awk '{print $1}'

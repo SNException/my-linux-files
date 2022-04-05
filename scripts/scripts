@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-SRC=$(dirname "$0")
-find $SRC -type f -printf "%f\n"
+src=$(dirname "$0")
+find $src -type f -printf "%f\n"

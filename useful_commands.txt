@@ -1,3 +1,30 @@
+Print specific line with awk:
+    $ awk '{if (NR == 10) print}' <filename>
+
+Emulate cat with awk:
+    $ awk '{print}' <filename>
+
+Print every line of a file which starts with '#':
+    $ awk '/^#/ {print}' <filename>
+
+For loop with awk:
+    $ awk 'BEGIN {for(i = 0; i < 100; ++i) print i*i}'
+
+Print all users with awk (changing column delimitter to a colon):
+    $ cat /etc/passwd | awk -F ":" '{print $1}'
+
+Basic awk syntax:
+    $ awk 'BEGIN {print "About to process..."} {print $1} END {print "Done processing"}' <filename> 
+
+Very useful way of using awk (make use of xargs):
+    $ some_output_with_multiple_lines | xargs | awk '{print $1}'
+
+Show type of all files which also have quotes in their names:
+    $ find . type -f -print0 | xargs -0 file
+
+Play mp4/3 file with ffplay
+    $ ffplay -fs -autoexit <filename>
+
 For loop range:
     $ for i in $(seq 10); do echo $i; done
 

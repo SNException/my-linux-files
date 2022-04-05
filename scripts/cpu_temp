@@ -7,28 +7,28 @@ then
     exit 1
 fi
 
-OUTPUT=$(sensors | awk '/^Core/ {print $3}')
-MOD_OUTPUT=$(echo $OUTPUT | sed 's/C//g' | sed 's/°//g' | sed 's/+//g' | sed 's/\.0//g')
-C1=$(echo $MOD_OUTPUT | awk '{print $1}')
-C2=$(echo $MOD_OUTPUT | awk '{print $2}')
+output=$(sensors | awk '/^Core/ {print $3}')
+mod_output=$(echo $output | sed 's/C//g' | sed 's/°//g' | sed 's/+//g' | sed 's/\.0//g')
+c1=$(echo $mod_output | awk '{print $1}')
+c2=$(echo $mod_output | awk '{print $2}')
 
-RESET='\033[0;0m'
-GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
-RED='\033[0;31m'
+reset='\033[0;0m'
+green='\033[0;32m'
+yellow='\033[0;33m'
+red='\033[0;31m'
 
-if (($C1 > 50)); then
-    echo -e "Core1: ${RED}${C1}°C${RESET}"
-elif (($C1 > 40)); then
-    echo -e "Core1: ${YELLOW}${C1}°C${RESET}"
+if (($c1 > 50)); then
+    echo -e "Core1: ${red}${c1}°C${reset}"
+elif (($c1 > 40)); then
+    echo -e "Core1: ${yellow}${c1}°C${reset}"
 else
-    echo -e "Core1: ${GREEN}${C1}°C${RESET}"
+    echo -e "Core1: ${green}${c1}°C${reset}"
 fi
 
-if (($C2 > 50)); then
-    echo -e "Core2: ${RED}${C2}°C${RESET}"
-elif (($C2 > 40)); then
-    echo -e "Core2: ${YELLOW}${C2}°C${RESET}"
+if (($c2 > 50)); then
+    echo -e "Core2: ${red}${c2}°C${reset}"
+elif (($c2 > 40)); then
+    echo -e "Core2: ${yellow}${c2}°C${reset}"
 else
-    echo -e "Core2: ${GREEN}${C2}°C${RESET}"
+    echo -e "Core2: ${green}${c2}°C${reset}"
 fi

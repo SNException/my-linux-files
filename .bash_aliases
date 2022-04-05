@@ -1,3 +1,4 @@
+alias startup_time='systemd-analyze blame | head'
 alias tm='xfce4-taskmanager'
 alias settings='xfce4-settings-manager'
 alias rot13="tr 'A-Za-z' 'N-ZA-Mn-za-m'"

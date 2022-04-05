@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
 result=$(free -h | awk '/^Mem:/ {print $3 " / " $2}' | sed "s/,/\./g")
-echo $result
-# echo $result "("$current_percentage")"
 
-used=$(free | awk '/^Mem:/ {print $3}' | sed "s/,/\./g")
-free=$(free | awk '/^Mem:/ {print $2}' | sed "s/,/\./g")
-current_percentage=$(awk -v var1=$used -v var2=$free 'BEGIN {print (var1/var2)*100}' | cut -d'.' -f1)
-current_percentage2=$(awk -v var1=$current_percentage -v var2=5 'BEGIN {print (var1/var2)}' | cut -d'.' -f1)
+total=$(free -b | awk '/^Mem:/ {print $2}' | sed "s/,/\./g")
+used=$(free -b | awk '/^Mem:/ {print $3}' | sed "s/,/\./g")
+current_percentage=$(awk -v var1=$used -v var2=$total 'BEGIN {print (var1/var2)*100}' | cut -d'.' -f1)
+current_percentage2=$(awk -v var1=$current_percentage -v var2=2 'BEGIN {print (var1/var2)}' | cut -d'.' -f1)
+
+echo $result "($current_percentage%)"
 
 reset='\033[0;0m'
 bold='\033[0;1m'
@@ -15,7 +15,7 @@ green='\033[0;32m'
 gray='\033[0;90m'
 
 printf "${bold}[${reset}"
-for i in $(seq 20)
+for i in $(seq 50)
 do
     if ((i <= $current_percentage2))
     then

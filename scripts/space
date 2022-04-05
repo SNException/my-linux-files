@@ -12,14 +12,14 @@ do
     used=$(df $m | awk 'FNR == 2 {print}' | awk '{print $3}')
     free=$(df $m | awk 'FNR == 2 {print}' | awk '{print $2}')
     current_percentage=$(awk -v var1=$used -v var2=$free 'BEGIN {print (var1/var2)*100}' | cut -d'.' -f1)
-    current_percentage2=$(awk -v var1=$current_percentage -v var2=5 'BEGIN {print (var1/var2)}' | cut -d'.' -f1)
+    current_percentage2=$(awk -v var1=$current_percentage -v var2=2 'BEGIN {print (var1/var2)}' | cut -d'.' -f1)
 
     result1=$(df $m -h | awk 'FNR == 2 {print}' | awk '{print $3}')
     result2=$(df $m -h | awk 'FNR == 2 {print}' | awk '{print $2}')
     echo $result1 "/" $result2 "("$current_percentage"%)"
 
     printf "${bold}[${reset}"
-    for i in $(seq 20)
+    for i in $(seq 50)
     do
        if ((i <= $current_percentage2))
        then

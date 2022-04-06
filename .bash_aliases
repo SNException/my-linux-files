@@ -1,3 +1,4 @@
+alias icat='kitty +kitten icat'
 alias startup_time='systemd-analyze blame | head'
 alias tm='xfce4-taskmanager'
 alias settings='xfce4-settings-manager'

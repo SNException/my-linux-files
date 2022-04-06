@@ -17,7 +17,16 @@ then
     for f in *.mp4
     do
         mp3=$(echo $f | sed 's/mp4/mp3/')
+        if [ -f "$mp3" ]; then
+            echo "File '$mp3' already exists..."
+            # sleep 1
+            continue
+        fi
         ffmpeg -i "$f" "$mp3"
+        current=$(command find *.mp3 | wc -l)
+        total=$(command find *.mp4 | wc -l)
+        echo "Progess: $current / $total"
+        sleep 1
     done
 else
     mp3=$(echo $1 | sed 's/mp4/mp3/')

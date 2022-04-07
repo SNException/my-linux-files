@@ -1,3 +1,28 @@
+Hexdump the first 100000 bytes of a device:
+    $ sudo hexdump -C -v -n 100000 /dev/<device_name>
+
+Make file system (e.g FAT32):
+    $ sudo mkfs.vfat -F 32 /dev/<device_partition>
+
+Check partitions:
+    $ sudo fdisk -l
+    $ lsblk -f
+
+Partition disk:
+    $ sudo fdisk /dev/<device_name_not_partition>
+
+Wipe entire device with zeros:
+    $ sudo dd if=/dev/zero of=/dev/<device_name_not_partition> bs=1M status="progress"
+
+Dump file content to stdout in reverse (oposite of cat):
+    $ tac <filename>
+
+Math with awk (floats cutting of after the dot (integer round)):
+    $ awk -v var1=2323.4343 -v var2=43.12000 'BEGIN {print var1/var2}' | cut -d '.' -f1
+
+Math with awk (floats):
+    $ awk -v var1=10.5 -v var2=4.3 'BEGIN {print var1/var2}'
+
 Print total user count:
     $ echo -n "Total user count: " && awk -F ":" '{print $1}' /etc/passwd | wc -l
 

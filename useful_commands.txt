@@ -1,4 +1,22 @@
-Hexdump the first 100000 bytes of a device:
+List all installed packages:
+    $  dpkg -l
+
+Print the printable characters of a file in a block of four (useful for binaries):
+    $ strings <filename>
+
+Simple way to append to a file:
+    $ echo "Hi" >> <filename>
+
+Simple way to overwrite a file content:
+    $ echo "Hi" > <filename>
+
+Get only the names of all running processes:
+    $ ps axch -o cmd
+
+List all installed fonts
+    $ fc-list
+
+Hexdump the first 100000 bytes of a device device:
     $ sudo hexdump -C -v -n 100000 /dev/<device_name>
 
 Make file system (e.g FAT32):

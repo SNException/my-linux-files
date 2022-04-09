@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+cat ~/hdd_change.txt | grep -v "\[" && sudo df | awk '/sda3/ {print}'

@@ -14,4 +14,4 @@ then
     exit 1
 fi
 
-sudo -s eval 'echo && echo [ Firewall ] && ufw status && echo && sleep 2 && echo [ chkrootkit ] && chkrootkit && echo && sleep 2 && rkhunter --sk --check'
+sudo -s eval 'echo && echo [ Firewall ] && echo && ufw status && echo && sleep 2 && echo [ chkrootkit ] && echo && chkrootkit && echo && sleep 2 && rkhunter --sk --check'

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+echo "TEMP"
+cpu_temp
+echo ""
+
+echo "DISK"
+space_root
+echo ""
+
+echo "RAM"
+ram

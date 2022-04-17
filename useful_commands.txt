@@ -1,3 +1,11 @@
+Show last logins:
+    $ last
+    $ sudo cat /var/log/auth.log
+    $ lastlog
+
+List all opened sockets and their processes:
+    $ lsof -i
+
 List all installed packages:
     $  dpkg -l
 

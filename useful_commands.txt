@@ -1,3 +1,24 @@
+Cat file without excecuting vt codes
+    $ cat -v somefile
+
+Gets logged in user:
+    $ logname
+
+Strip filename from path (including extension)
+    $ basename /some/path/to/a/file.txt .txt
+
+Strip dirname from path:
+    $ dirname /some/path/to/a/file.txt
+
+Show last logins:
+    $ last
+    $ last | head
+    $ sudo cat /var/log/auth.log
+    $ lastlog
+
+List all opened sockets and their processes:
+    $ lsof -i
+
 List all installed packages:
     $  dpkg -l
 
@@ -16,7 +37,7 @@ Get only the names of all running processes:
 List all installed fonts
     $ fc-list
 
-Hexdump the first 100000 bytes of a device device:
+Hexdump the first 100000 bytes of a device:
     $ sudo hexdump -C -v -n 100000 /dev/<device_name>
 
 Make file system (e.g FAT32):
@@ -78,7 +99,7 @@ Very useful way of using awk (make use of xargs):
     $ some_output_with_multiple_lines | xargs | awk '{print $1}'
 
 Show type of all files which also have quotes in their names:
-    $ find . type -f -print0 | xargs -0 file
+    $ find . -type f -print0 | xargs -0 fileS
 
 Play mp4/3 file with ffplay
     $ ffplay -fs -autoexit <filename>

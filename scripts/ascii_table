@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-for i in {33..126}
-do
-    printf "$i -> \x$(printf %x $i)\n"
-done

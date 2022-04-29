@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-awk '{if (length($0) > 80) print $0}' $1

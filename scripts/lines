@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-find . -type f | xargs wc -l | grep -i total | xargs | cut -d ' ' -f 1

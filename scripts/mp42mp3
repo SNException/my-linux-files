@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+#
+# Converts all mp4 filees into mp3 using ffmpeg.
+# - Niklas Schultz
+#
+
+
 if ! command -v ffmpeg > /dev/null
 then
     echo "No 'ffmpeg' installed on this machine."

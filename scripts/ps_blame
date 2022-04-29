@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+#
+# Displays the top 10 processes by cpu and ram usage.
+# - Niklas Schultz
+#
+
 echo
 echo "[ RAM ]"
 echo

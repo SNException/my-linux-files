@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-awk -F\' '/menuentry / {print $2}' /boot/grub/grub.cfg | grep -i generic | grep -v recovery

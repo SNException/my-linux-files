@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+#
+# Displays the current ram (main memory) usage.
+# - Niklas Schultz
+#
+
 result=$(free -h | awk '/^Mem:/ {print $3 " / " $2}' | sed "s/,/\./g")
 
 total=$(free -b | awk '/^Mem:/ {print $2}' | sed "s/,/\./g")

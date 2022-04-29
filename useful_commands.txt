@@ -1,3 +1,14 @@
+Change the root directory (e.g to create jail):
+    $ chroot <dirname>
+
+To access root only dir:
+    $ sudo su
+    $ cd <dirname>
+
+Make directory root only:
+    $ chown root:root <dirname>
+    $ chmod 700 <dirname>
+
 Cat file without excecuting vt codes
     $ cat -v somefile
 
@@ -188,7 +199,8 @@ Check boot time:
 Find a file and open it in vim:
     $ find . | grep -i <filename> | xargs vim
 
-Run rkhunter:
+Check for known rootkits:
+    $ sudo chkrootkit
     $ sudo rkhunter --sk --check
 
 Get sha256 from every file in directory:

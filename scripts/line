@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-fn=$1
-ln=$2
-
-cat $fn | awk -v var1=$ln '{if(NR==var1) print}'

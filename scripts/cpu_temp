@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+#
+# Displays the cpu temperature.
+# - Niklas Schultz
+#
+
+if ! command -v sensors > /dev/null; then
+    echo "No 'sensors' installed on this machine."
+    echo "Script will terminate!"
+    exit 1
+fi
+
+RESET='\033[0;0m'
+BOLD='\033[0;1m'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+
+core_count=$(sensors | grep Core | wc -l)
+
+for i in $(seq $core_count); do
+    n=$(($i - 1))
+    output=$(sensors | grep "Core $n" | xargs | awk '{print $1 " " $2 " " $3}')
+    temp=$(echo $output | awk '{print $3}' | sed 's/+//' | sed 's/°C//' | sed 's/\.[0-9]//')
+    if (($temp <= 35)); then
+        printf "Core ${n}: ${GREEN}${temp}°C${RESET}\n"
+    elif (($temp <= 45)); then
+        printf "Core ${n}: ${YELLOW}${temp}°C${RESET}\n"
+    else
+        printf "Core ${n}: ${RED}${temp}°C${RESET}\n"
+    fi
+done

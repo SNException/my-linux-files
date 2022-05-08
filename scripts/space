@@ -5,28 +5,40 @@
 # - Niklas Schultz
 #
 
-reset='\033[0;0m'
-bold='\033[0;1m'
-green='\033[0;32m'
-gray='\033[0;90m'
+dir=$1
+if [ -z "$dir" ]; then
+    # If no argument is provided we set root directory
+    dir="/"
+fi
 
-used=$(df / | awk 'FNR == 2 {print}' | awk '{print $3}')
-free=$(df / | awk 'FNR == 2 {print}' | awk '{print $2}')
+mountpoint -q $dir
+if [ $? -ne 0 ]; then
+    echo "The given argument does not point to a mountpoint."
+    echo "The script will terminate"
+    exit 1
+fi
+
+RESET='\033[0;0m'
+BOLD='\033[0;1m'
+GREEN='\033[0;32m'
+GRAY='\033[0;90m'
+
+used=$(df $dir | awk 'FNR == 2 {print}' | awk '{print $3}')
+free=$(df $dir | awk 'FNR == 2 {print}' | awk '{print $2}')
 current_percentage=$(awk -v var1=$used -v var2=$free 'BEGIN {print (var1/var2)*100}' | cut -d'.' -f1)
 current_percentage2=$(awk -v var1=$current_percentage -v var2=2 'BEGIN {print (var1/var2)}' | cut -d'.' -f1)
 
-result1=$(df / -h | awk 'FNR == 2 {print}' | awk '{print $3}')
-result2=$(df / -h | awk 'FNR == 2 {print}' | awk '{print $2}')
+result1=$(df $dir -h | awk 'FNR == 2 {print}' | awk '{print $3}')
+result2=$(df $dir -h | awk 'FNR == 2 {print}' | awk '{print $2}')
 echo $result1 "/" $result2 "("$current_percentage"%)"
 
-printf "${bold}[${reset}"
-for i in $(seq 50)
-do
+printf "${BOLD}[${RESET}"
+for i in $(seq 50); do
    if ((i <= $current_percentage2))
    then
-       printf "${green}|${reset}"
+       printf "${GREEN}|${RESET}"
    else
-       printf "${gray}|${reset}"
+       printf "${GRAY}|${RESET}"
    fi
 done
-printf "${bold}]${reset}\n"
+printf "${BOLD}]${RESET}\n"

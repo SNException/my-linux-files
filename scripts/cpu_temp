@@ -12,7 +12,6 @@ if ! command -v sensors > /dev/null; then
 fi
 
 RESET='\033[0;0m'
-BOLD='\033[0;1m'
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
@@ -23,11 +22,11 @@ for i in $(seq $core_count); do
     n=$(($i - 1))
     output=$(sensors | grep "Core $n" | xargs | awk '{print $1 " " $2 " " $3}')
     temp=$(echo $output | awk '{print $3}' | sed 's/+//' | sed 's/°C//' | sed 's/\.[0-9]//')
-    if (($temp <= 35)); then
-        printf "Core ${n}: ${GREEN}${temp}°C${RESET}\n"
-    elif (($temp <= 45)); then
-        printf "Core ${n}: ${YELLOW}${temp}°C${RESET}\n"
+    if (($temp <= 39)); then
+        printf "Core ${i}: ${GREEN}${temp}°C${RESET}\n"
+    elif (($temp <= 49)); then
+        printf "Core ${i}: ${YELLOW}${temp}°C${RESET}\n"
     else
-        printf "Core ${n}: ${RED}${temp}°C${RESET}\n"
+        printf "Core ${i}: ${RED}${temp}°C${RESET}\n"
     fi
 done

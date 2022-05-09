@@ -14,7 +14,7 @@ fi
 mountpoint -q $dir
 if [ $? -ne 0 ]; then
     echo "The given argument does not point to a mountpoint."
-    echo "The script will terminate"
+    echo "The script will terminate."
     exit 1
 fi
 

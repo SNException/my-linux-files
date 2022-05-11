@@ -1,3 +1,21 @@
+Archive a directory:
+    $ tar -cfvz <output_name> <input_name>
+
+Extract a directory:
+    $ tar -xfvz <dir_name>
+
+Change last modified time to everything you want:
+    $ touch -d 1970-01-01 00:00:00 foo.txt
+
+Hex dump the last part of a file (possible injection check):
+    $ hexdump -C <filenam> | tail -100
+
+Print return code of last command executed:
+    $ echo $?
+
+Install .deb file manually (when not avail with apt):
+    $ sudo dpkg -i file.deb
+
 Change the root directory (e.g to create jail):
     $ chroot <dirname>
 

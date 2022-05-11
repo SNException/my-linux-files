@@ -1,0 +1,118 @@
+#!/usr/bin/env bash
+
+#
+# Check bin files for any changes/tampering.
+# - Niklas Schultz
+#
+
+##############################################################################
+#
+# Global function definitions
+#
+##############################################################################
+
+check_sha256sum_authentication ()
+{
+    if [ ! -f /usr/bin/sha256sum ]; then
+        echo "No '/usr/bin/sha256sum' available."
+        echo "Script will terminate."
+        exit 1
+    fi
+
+    size_in_bytes=$(du -b /usr/bin/sha256sum | awk '{print $1}')
+    if [ "$size_in_bytes" != "59768" ]; then
+        echo "==============================================="
+        echo "Suspicous sha256sum executable found."
+        echo "Size in bytes differs from the expected value."
+        echo "==============================================="
+        sleep 2
+    fi
+
+    last_mod_time=$(date -r /usr/bin/sha256sum)
+    if [ "$last_mod_time" != "Thu 05 Sep 2019 12:38:40 PM CEST" ]; then
+        echo "==========================================================="
+        echo "Suspicous sha256sum modification date found."
+        echo "The last modification time differs from the expected value."
+        echo "==========================================================="
+        sleep 2
+    fi
+}
+
+check_hashes_file__authentication ()
+{
+    mod_date_of_hashes_file=$(date -r "$HASHES_FILE")
+    if [ "$mod_date_of_hashes_file" != "Thu 01 Jan 1970 12:00:00 PM CET" ]; then
+        echo "============================================================="
+        echo "Suspicous: Seems like the hashes file has been tampered with."
+        echo "============================================================="
+        sleep 2
+    fi
+}
+
+update_index ()
+{
+    echo "Updating hashes..."
+    for f in $files; do
+        echo "Getting hash for $f..."
+        sha256sum $f >> "$HASHES_FILE"
+    done
+    echo "Hashes have been updated."
+
+    touch -d "1970-01-01 12:00:00" "$HASHES_FILE"
+}
+
+check_index ()
+{
+    changed=0
+    missing=0
+    while IFS= read -r line; do
+        fname=$(echo $line | awk '{print $2}')
+        printf "Checking hash for '$fname'... "
+
+        if [ ! -f "$fname" ]; then
+            echo "missing"
+            missing=$((missing + 1))
+            continue
+        fi
+
+        old_hash=$(echo $line | awk '{print $1}')
+        current_hash=$(sha256sum $fname | awk '{print $1}')
+        if [ "$old_hash" != "$current_hash" ]; then
+            echo "changed"
+            changed=$((changed + 1))
+        else
+            echo "nothing changed"
+        fi
+    done < "$HASHES_FILE"
+
+    echo
+    echo
+    echo "Results"
+    echo "-------"
+    echo "Changed files : $changed"
+    echo "Missing files : $missing"
+
+    if [ $(echo "$files" | wc -l) -gt $(cat $HASHES_FILE | wc -l) ]; then
+        echo "Note: There are more files present than currently recorded"
+        echo "in the hash file!"
+    fi
+}
+
+##############################################################################
+#
+# Start of program
+#
+##############################################################################
+
+check_sha256sum_authentication
+
+HASHES_FILE="$HOME/.chkbins.txt"
+
+files=$(find /usr/bin/ -type f | sort && find /usr/sbin/ -type f | sort)
+if [ ! -f "$HASHES_FILE" ]; then
+    update_index
+else
+    check_hashes_file__authentication
+    check_index
+fi
+

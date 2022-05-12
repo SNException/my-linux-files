@@ -19,33 +19,31 @@ check_sha256sum_authentication ()
         exit 1
     fi
 
+    printf "Checking sha256sum byte size... "
     size_in_bytes=$(du -b /usr/bin/sha256sum | awk '{print $1}')
     if [ "$size_in_bytes" != "59768" ]; then
-        echo "==============================================="
-        echo "Suspicous sha256sum executable found."
-        echo "Size in bytes differs from the expected value."
-        echo "==============================================="
-        sleep 2
+        printf "suspicous\n"
+    else
+        printf "ok\n"
     fi
 
+    printf "Checking sha256sum last modification date... "
     last_mod_time=$(date -r /usr/bin/sha256sum)
     if [ "$last_mod_time" != "Thu 05 Sep 2019 12:38:40 PM CEST" ]; then
-        echo "==========================================================="
-        echo "Suspicous sha256sum modification date found."
-        echo "The last modification time differs from the expected value."
-        echo "==========================================================="
-        sleep 2
+        printf "suspicous\n"
+    else
+        printf "ok\n"
     fi
 }
 
 check_hashes_file__authentication ()
 {
+    printf "Checking hash file authentication... "
     mod_date_of_hashes_file=$(date -r "$HASHES_FILE")
     if [ "$mod_date_of_hashes_file" != "Thu 01 Jan 1970 12:00:00 PM CET" ]; then
-        echo "============================================================="
-        echo "Suspicous: Seems like the hashes file has been tampered with."
-        echo "============================================================="
-        sleep 2
+        printf "suspicous\n"
+    else
+        printf "ok\n"
     fi
 }
 
@@ -53,7 +51,7 @@ update_index ()
 {
     echo "Updating hashes..."
     for f in $files; do
-        echo "Getting hash for $f..."
+        echo "Updating $f..."
         sha256sum $f >> "$HASHES_FILE"
     done
     echo "Hashes have been updated."
@@ -67,7 +65,7 @@ check_index ()
     missing=0
     while IFS= read -r line; do
         fname=$(echo $line | awk '{print $2}')
-        printf "Checking hash for '$fname'... "
+        printf "Checking '$fname'... "
 
         if [ ! -f "$fname" ]; then
             echo "missing"
@@ -113,6 +111,7 @@ if [ ! -f "$HASHES_FILE" ]; then
     update_index
 else
     check_hashes_file__authentication
+    sleep 0.5
     check_index
 fi
 

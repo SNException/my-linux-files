@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+
+#
+# Check if a file could be malicious.
+# - Niklas Schultz
+#
+
+##############################################################################
+#
+# Global function definitions
+#
+##############################################################################
+
+check_dir ()
+{
+    for f in "$1"/*; do
+        check_file $f
+    done
+}
+
+check_file ()
+{
+    if [[ -d $1 ]]; then
+        return
+    fi
+
+    sus=0
+    printf "Checking '$1'... "
+
+    strs=$(strings "$1")
+
+    # clear text
+    for s in "${evil_strings[@]}"; do
+        echo $strs | grep -i -q "$s"
+        if [ $? -eq 0 ]; then
+            sus=1
+            break
+        fi
+    done
+
+    # attempt reverse decryption
+    for s in "${evil_strings[@]}"; do
+        decrypted_s=$(echo "$s" | rev)
+        echo $strs | grep -i -q "$decrypted_s"
+        if [ $? -eq 0 ]; then
+            sus=1
+            break
+        fi
+    done
+
+    # attempt rot13 decryption
+    for s in "${evil_strings[@]}"; do
+        decrypted_s=$(echo "$s" | tr 'A-Za-z' 'N-ZA-Mn-za-m')
+        echo $strs | grep -i -q "$decrypted_s"
+        if [ $? -eq 0 ]; then
+            sus=1
+            break
+        fi
+    done
+
+    if [ $sus == 1 ]; then
+        printf "suspicous\n"
+    else
+        printf "ok\n"
+    fi
+}
+
+##############################################################################
+#
+# Start of program
+#
+##############################################################################
+
+path=$1
+if [ -z $path ]; then
+    echo "Please specify the file/path you wish to check."
+    exit 1
+fi
+
+IFS=''
+evil_strings=(
+"but don't worry"
+"files encrpyted"
+"files are encrpyted"
+"your files are now encrypted"
+"do not rename encrypted files"
+"free decryption"
+"your files have been encrypted"
+"bitcoin"
+"onion"
+"tor browser"
+"ransom"
+"pwned"
+"owned"
+"hacked"
+"worm"
+"persistence"
+"trojan"
+"virus"
+"malware"
+"backdoor"
+"rootkit"
+"powershell"
+"vbscript"
+"vb\.script"
+"http\:\/\/"
+"HKEY"
+)
+
+if [[ -d $path ]]; then
+    check_dir $path
+elif [[ -f $path ]]; then
+    check_file $path
+fi

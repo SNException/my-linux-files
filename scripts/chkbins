@@ -13,16 +13,11 @@
 
 check_sha256sum_authentication ()
 {
-    if [ ! -f /usr/bin/sha256sum ]; then
-        echo "No '/usr/bin/sha256sum' available."
-        echo "Script will terminate."
-        exit 1
-    fi
-
     printf "Checking sha256sum byte size... "
     size_in_bytes=$(du -b /usr/bin/sha256sum | awk '{print $1}')
     if [ "$size_in_bytes" != "59768" ]; then
         printf "suspicous\n"
+        exit 1
     else
         printf "ok\n"
     fi
@@ -31,6 +26,27 @@ check_sha256sum_authentication ()
     last_mod_time=$(date -r /usr/bin/sha256sum)
     if [ "$last_mod_time" != "Thu 05 Sep 2019 12:38:40 PM CEST" ]; then
         printf "suspicous\n"
+        exit 1
+    else
+        printf "ok\n"
+    fi
+
+    printf "Checking sha256sum hash value 1..."
+    trusted_hash_value="b693d4bd026ba1515edacabcadbd6785454b08ec9468665e4dc33f01df8cc659"
+    actual_hash_value=$(sha256sum /usr/bin/sha256sum | awk '{print $1}')
+    if [ "$trusted_hash_value" != "$actual_hash_value" ]; then
+        printf "suspicous\n"
+        exit 1
+    else
+        printf "ok\n"
+    fi
+
+    printf "Checking sha256sum hash value 2..."
+    trusted_hash_value="ae35d20c02858dce2ce5083194f43cec"
+    actual_hash_value=$(md5sum /usr/bin/sha256sum | awk '{print $1}')
+    if [ "$trusted_hash_value" != "$actual_hash_value" ]; then
+        printf "suspicous\n"
+        exit 1
     else
         printf "ok\n"
     fi
@@ -42,6 +58,7 @@ check_hashes_file__authentication ()
     mod_date_of_hashes_file=$(date -r "$HASHES_FILE")
     if [ "$mod_date_of_hashes_file" != "Thu 01 Jan 1970 12:00:00 PM CET" ]; then
         printf "suspicous\n"
+        exit 1
     else
         printf "ok\n"
     fi
@@ -103,6 +120,12 @@ check_index ()
 #
 ##############################################################################
 
+if [ ! -f /usr/bin/sha256sum ]; then
+    echo "No '/usr/bin/sha256sum' available."
+    echo "Script will terminate."
+    exit 1
+fi
+
 HASHES_FILE="$HOME/.config/chkbins/.chkbins.txt"
 
 check_sha256sum_authentication
@@ -113,7 +136,6 @@ if [ ! -f "$HASHES_FILE" ]; then
     update_index
 else
     check_hashes_file__authentication
-    sleep 0.5
     check_index
 fi
 

@@ -54,6 +54,7 @@ update_index ()
         echo "Updating $f..."
         sha256sum $f >> "$HASHES_FILE"
     done
+    echo ""
     echo "Hashes have been updated."
 
     touch -d "1970-01-01 12:00:00" "$HASHES_FILE"
@@ -102,12 +103,13 @@ check_index ()
 #
 ##############################################################################
 
-check_sha256sum_authentication
+HASHES_FILE="$HOME/.config/chkbins/.chkbins.txt"
 
-HASHES_FILE="$HOME/.chkbins.txt"
+check_sha256sum_authentication
 
 files=$(find /usr/bin/ -type f | sort && find /usr/sbin/ -type f | sort)
 if [ ! -f "$HASHES_FILE" ]; then
+    mkdir -p $(dirname $HASHES_FILE) > /dev/zero
     update_index
 else
     check_hashes_file__authentication

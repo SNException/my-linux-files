@@ -30,7 +30,16 @@ check_sha256sum_authentication ()
     else
         printf "ok\n"
     fi
-    
+
+    printf "Checking sha256sum authentication (hexdump)... "
+    # we are just checking a random sequence of bytes
+    if [ $(hexdump -v /usr/bin/sha256sum | grep 000e730 | awk '{print $6}') != "00d5" ]; then
+        printf "suspicous\n"
+        exit 1
+    else
+        printf "ok\n"
+    fi
+
     printf "Checking sha256sum authentication (strings)... "
     if [ $(strings /usr/bin/sha256sum | wc -l) != 536 ]; then
         printf "suspicous\n"

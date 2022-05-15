@@ -81,6 +81,7 @@ check_index ()
 {
     changed=0
     missing=0
+    added=0
     while IFS= read -r line; do
         fname=$(echo $line | awk '{print $2}')
         printf "Checking '$fname'... "
@@ -100,6 +101,15 @@ check_index ()
             echo "nothing changed"
         fi
     done < "$HASHES_FILE"
+    
+    echo "Checking for new files... "
+    for f in $files; do
+        grep -F -w -q "$f" "$HASHES_FILE"
+        if [ $? -ne 0 ]; then
+            echo "'$f'"
+            added=$((added + 1))
+        fi
+    done
 
     echo
     echo
@@ -107,11 +117,7 @@ check_index ()
     echo "-------"
     echo "Changed files : $changed"
     echo "Missing files : $missing"
-
-    if [ $(echo "$files" | wc -l) -gt $(cat $HASHES_FILE | wc -l) ]; then
-        echo "Note: There are more files present than currently recorded"
-        echo "in the hash file!"
-    fi
+    echo "Added   files : $added"
 }
 
 ##############################################################################
@@ -126,11 +132,11 @@ if [ ! -f /usr/bin/sha256sum ]; then
     exit 1
 fi
 
-HASHES_FILE="$HOME/.config/chkbins/.chkbins.txt"
+HASHES_FILE="$HOME/.config/chktamper/.chktamper.txt"
 
 check_sha256sum_authentication
 
-files=$(find /usr/bin/ -type f | sort && find /usr/sbin/ -type f | sort)
+files=$(find /etc/xdg/autostart/ -type f | sort && find /usr/bin/ -type f | sort && find /usr/sbin/ -type f | sort)
 if [ ! -f "$HASHES_FILE" ]; then
     mkdir -p $(dirname $HASHES_FILE) > /dev/zero
     update_index

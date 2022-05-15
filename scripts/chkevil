@@ -91,10 +91,8 @@ evil_strings=(
 "tor browser"
 "ransom"
 "pwned"
-"owned"
 "hacked"
 "worm"
-"persistence"
 "trojan"
 "virus"
 "malware"
@@ -103,7 +101,6 @@ evil_strings=(
 "powershell"
 "vbscript"
 "vb\.script"
-"http\:\/\/"
 "HKEY"
 )
 

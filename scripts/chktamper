@@ -180,7 +180,7 @@ HASHES_FILE="$HOME/.config/chktamper/.chktamper.txt"
 
 check_sha256sum_authentication
 
-files=$(find /etc/xdg/autostart/ -type f | sort && find /usr/bin/ -type f | sort && find /usr/sbin/ -type f | sort)
+files=$(find /etc/passwd | sort && find /etc/hosts | sort && find /etc/xdg/autostart/ -type f | sort && find /usr/bin/ -type f | sort && find /usr/sbin/ -type f | sort)
 if [ ! -f "$HASHES_FILE" ]; then
     mkdir -p $(dirname $HASHES_FILE) > /dev/zero
     update_index

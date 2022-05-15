@@ -13,7 +13,7 @@
 
 check_sha256sum_authentication ()
 {
-    printf "Checking sha256sum byte size... "
+    printf "Checking sha256sum authentication (size)... "
     size_in_bytes=$(du -b /usr/bin/sha256sum | awk '{print $1}')
     if [ "$size_in_bytes" != "59768" ]; then
         printf "suspicous\n"
@@ -22,7 +22,7 @@ check_sha256sum_authentication ()
         printf "ok\n"
     fi
 
-    printf "Checking sha256sum last modification date... "
+    printf "Checking sha256sum authentication (date)... "
     last_mod_time=$(date -r /usr/bin/sha256sum)
     if [ "$last_mod_time" != "Thu 05 Sep 2019 12:38:40 PM CEST" ]; then
         printf "suspicous\n"
@@ -30,8 +30,16 @@ check_sha256sum_authentication ()
     else
         printf "ok\n"
     fi
+    
+    printf "Checking sha256sum authentication (strings)... "
+    if [ $(strings /usr/bin/sha256sum | wc -l) != 536 ]; then
+        printf "suspicous\n"
+        exit 1
+    else
+        printf "ok\n"
+    fi
 
-    printf "Checking sha256sum hash value 1..."
+    printf "Checking sha256sum authentication (sha256)... "
     trusted_hash_value="b693d4bd026ba1515edacabcadbd6785454b08ec9468665e4dc33f01df8cc659"
     actual_hash_value=$(sha256sum /usr/bin/sha256sum | awk '{print $1}')
     if [ "$trusted_hash_value" != "$actual_hash_value" ]; then
@@ -41,7 +49,17 @@ check_sha256sum_authentication ()
         printf "ok\n"
     fi
 
-    printf "Checking sha256sum hash value 2..."
+    printf "Checking sha256sum authentication (sha1)... "
+    trusted_hash_value="6ba3d35c8c22f07339cb519adb78273630badeb2"
+    actual_hash_value=$(sha1sum /usr/bin/sha256sum | awk '{print $1}')
+    if [ "$trusted_hash_value" != "$actual_hash_value" ]; then
+        printf "suspicous\n"
+        exit 1
+    else
+        printf "ok\n"
+    fi
+
+    printf "Checking sha256sum authentication (md5)... "
     trusted_hash_value="ae35d20c02858dce2ce5083194f43cec"
     actual_hash_value=$(md5sum /usr/bin/sha256sum | awk '{print $1}')
     if [ "$trusted_hash_value" != "$actual_hash_value" ]; then
@@ -128,6 +146,18 @@ check_index ()
 
 if [ ! -f /usr/bin/sha256sum ]; then
     echo "No '/usr/bin/sha256sum' available."
+    echo "Script will terminate."
+    exit 1
+fi
+
+if [ ! -f /usr/bin/sha1sum ]; then
+    echo "No '/usr/bin/sha1sum' available."
+    echo "Script will terminate."
+    exit 1
+fi
+
+if [ ! -f /usr/bin/md5sum ]; then
+    echo "No '/usr/bin/sha1sum' available."
     echo "Script will terminate."
     exit 1
 fi

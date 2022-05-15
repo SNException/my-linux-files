@@ -145,6 +145,11 @@ check_index ()
     echo "Changed files : $changed"
     echo "Missing files : $missing"
     echo "Added   files : $added"
+
+    echo
+    if [ $changed != 0 ] || [ $missing != 0 ] || [ $added != 0 ]; then
+        echo "Changes detected: Possible security breach!"
+    fi
 }
 
 ##############################################################################

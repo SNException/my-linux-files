@@ -79,7 +79,7 @@ check_sha256sum_authentication ()
     fi
 }
 
-check_hashes_file__authentication ()
+check_hashes_file_authentication ()
 {
     printf "Checking hash file authentication... "
     mod_date_of_hashes_file=$(date -r "$HASHES_FILE")
@@ -176,16 +176,18 @@ if [ ! -f /usr/bin/md5sum ]; then
     exit 1
 fi
 
-HASHES_FILE="$HOME/.config/chktamper/.chktamper.txt"
+HASHES_FILE="$HOME/.config/chkfiles/.chkfiles.txt"
 
 check_sha256sum_authentication
 
+printf "Gathering files... "
 files=$(find /etc/passwd | sort && find /etc/hosts | sort && find /etc/xdg/autostart/ -type f | sort && find /usr/bin/ -type f | sort && find /usr/sbin/ -type f | sort)
+printf "done\n"
 if [ ! -f "$HASHES_FILE" ]; then
     mkdir -p $(dirname $HASHES_FILE) > /dev/zero
     update_index
 else
-    check_hashes_file__authentication
+    check_hashes_file_authentication
     check_index
 fi
 

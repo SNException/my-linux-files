@@ -58,6 +58,16 @@ check_file ()
         fi
     done
 
+    # attempt base64 decryption
+    for s in "${evil_strings[@]}"; do
+        decrypted_s=$(echo "$s" | base64)
+        echo $strs | grep -i -q "$decrypted_s"
+        if [ $? -eq 0 ]; then
+            sus=1
+            break
+        fi
+    done
+
     if [ $sus == 1 ]; then
         printf "suspicous\n"
     else

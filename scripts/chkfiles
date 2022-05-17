@@ -31,6 +31,15 @@ check_sha256sum_authentication ()
         printf "ok\n"
     fi
 
+    printf "Checking sha256sum authentication (header)... "
+    header=$(hexdump -v /usr/bin/sha256sum | head -1 | awk '{print $2$3$4$5$6$7$8$9}')
+    if [ $header != "457f464c010200010000000000000000" ]; then
+        printf "suspicous\n"
+        exit 1
+    else
+        printf "ok\n"
+    fi
+
     printf "Checking sha256sum authentication (hexdump)... "
     # we are just checking a random sequence of bytes
     if [ $(hexdump -v /usr/bin/sha256sum | grep 000e730 | awk '{print $6}') != "00d5" ]; then
@@ -42,6 +51,16 @@ check_sha256sum_authentication ()
 
     printf "Checking sha256sum authentication (strings)... "
     if [ $(strings /usr/bin/sha256sum | wc -l) != 536 ]; then
+        printf "suspicous\n"
+        exit 1
+    else
+        printf "ok\n"
+    fi
+
+    printf "Checking sha256sum authentication (base64)... "
+    padding_count=$(base64 /usr/bin/sha256sum | grep -o "=" | wc -l)
+    random_char_count=$(base64 /usr/bin/sha256sum | grep -o "A" | wc -l)
+    if [ $padding_count != 1 ] || [ $random_char_count != 25746 ]; then
         printf "suspicous\n"
         exit 1
     else

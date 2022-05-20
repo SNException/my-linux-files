@@ -1,8 +1,10 @@
 alias play='vlc '
 alias rot13="tr 'A-Za-z' 'N-ZA-Mn-za-m'"
-alias ll='ls -arilh --color=auto'
+alias ll='ls -Ailh --color=auto'
 alias angband='~/Angband-4.2.4/src/angband -mgcu'
 alias nethack='~/nh/install/games/nethack'
+alias sclear='history -c && tput reset'
+alias wreck='shred -zuv '
 
 sudo ()
 {

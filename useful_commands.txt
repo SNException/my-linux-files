@@ -1,3 +1,14 @@
+Delete file in a way which makes it hard to recover the data:
+    $ shred -zuv <filename>
+
+Cound specific character in string:
+    $ cat <filename> | grep -o "A"
+
+Decode base64 string:
+    $ base64 -d <filename>
+    $ cat <filename> | base64 -d
+    $ if [ $content == "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$" ]
+
 Archive a directory:
     $ tar -cfvz <output_name> <input_name>
 

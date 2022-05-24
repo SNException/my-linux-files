@@ -4,7 +4,8 @@ alias ll='ls -Ailh --color=auto'
 alias angband='~/Angband-4.2.4/src/angband -mgcu'
 alias nethack='~/nh/install/games/nethack'
 alias sclear='history -c && tput reset'
-alias wreck='shred -zuv '
+alias banish='shred -zuv '
+alias open='xdg-open '
 
 sudo ()
 {
